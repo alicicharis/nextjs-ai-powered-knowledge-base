@@ -2,10 +2,9 @@ import MediaList from "@/components/media/media-list";
 import MediaUpload from "@/components/media/media-upload";
 import Nav from "@/components/nav";
 import Shop from "@/components/shop";
-import { db } from "@/db";
-import { files, users } from "@/db/schema";
+import { getUserFiles } from "@/data/files";
+import { getUserCoins } from "@/data/users";
 import { getSession } from "@/lib/auth";
-import { eq } from "drizzle-orm";
 import { unstable_cache as nextCache } from "next/cache";
 import { redirect } from "next/navigation";
 
@@ -16,30 +15,30 @@ export default async function Home() {
     redirect("/sign-in");
   }
 
-  const userData = await nextCache(
+  const getUserData = nextCache(
     async () => {
-      return await db.query.users.findFirst({
-        where: eq(users.id, session.user.id),
-        columns: { coins: true },
-      });
+      return await getUserCoins(session.user.id);
     },
     [`user-${session.user.id}`],
     {
       tags: [`user-${session.user.id}`],
     }
-  )();
+  );
 
-  const filesData = await nextCache(
+  const getFilesData = nextCache(
     async () => {
-      return await db.query.files.findMany({
-        where: eq(files.userId, session.user.id),
-      });
+      return await getUserFiles(session.user.id);
     },
     [`files-${session.user.id}`],
     {
       tags: [`files-${session.user.id}`],
     }
-  )();
+  );
+
+  const [userData, filesData] = await Promise.all([
+    getUserData(),
+    getFilesData(),
+  ]);
 
   return (
     <main>

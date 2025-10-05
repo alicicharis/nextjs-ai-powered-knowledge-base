@@ -3,7 +3,14 @@
 import { db } from "@/db";
 import { files } from "@/db/schema";
 import { getSession } from "@/lib/auth";
+import { eq } from "drizzle-orm";
 import { revalidateTag } from "next/cache";
+
+export const getUserFiles = async (userId: string) => {
+  return await db.query.files.findMany({
+    where: eq(files.userId, userId),
+  });
+};
 
 export const createUserFile = async (
   key: string,

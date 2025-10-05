@@ -1,6 +1,7 @@
 "use server";
 
 import { createUserFile } from "@/data/files";
+import { updateUserCoins } from "@/data/users";
 import { getSession } from "@/lib/auth";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
@@ -66,9 +67,11 @@ export async function getSignedURL({
     },
   });
 
-  const url = await getSignedUrl(s3Client, putObjectCommand, { expiresIn: 60 });
-
-  await createUserFile(fileKey, fileType, fileName);
+  const [url] = await Promise.all([
+    getSignedUrl(s3Client, putObjectCommand, { expiresIn: 60 }),
+    createUserFile(fileKey, fileType, fileName),
+    updateUserCoins(-20),
+  ]);
 
   return { success: { url } };
 }
