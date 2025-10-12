@@ -1,11 +1,11 @@
-"use server";
+'use server';
 
-import { createUserFile } from "@/data/files";
-import { updateUserCoins } from "@/data/users";
-import { getSession } from "@/lib/auth";
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import crypto from "crypto";
+import { createUserFile } from '@/data/files';
+import { updateUserCoins } from '@/data/users';
+import { getSession } from '@/lib/auth';
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+import crypto from 'crypto';
 
 type SignedURLResponse = Promise<
   | { failure?: undefined; success: { url: string } }
@@ -20,9 +20,9 @@ type GetSignedURLParams = {
 };
 
 const generateFileName = (bytes = 32) =>
-  crypto.randomBytes(bytes).toString("hex");
+  crypto.randomBytes(bytes).toString('hex');
 
-const allowedFileTypes = ["text/csv"];
+const allowedFileTypes = ['text/csv', 'text/plain'];
 
 const maxFileSize = 1048576 * 10 * 10; // 10 MB
 
@@ -43,15 +43,15 @@ export async function getSignedURL({
   const session = await getSession();
 
   if (!session) {
-    return { failure: "Not authenticated" };
+    return { failure: 'Not authenticated' };
   }
 
   if (!allowedFileTypes.includes(fileType)) {
-    return { failure: "File type not allowed" };
+    return { failure: 'File type not allowed' };
   }
 
   if (fileSize > maxFileSize) {
-    return { failure: "File size too large" };
+    return { failure: 'File size too large' };
   }
 
   const fileKey = generateFileName();

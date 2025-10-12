@@ -1,19 +1,25 @@
-import MediaList from "@/components/media/media-list";
-import MediaUpload from "@/components/media/media-upload";
-import Nav from "@/components/nav";
-import Shop from "@/components/shop";
-import { getUserFiles } from "@/data/files";
-import { getUserCoins } from "@/data/users";
-import { getSession } from "@/lib/auth";
-import { unstable_cache as nextCache } from "next/cache";
-import { redirect } from "next/navigation";
+import MediaList from '@/components/media/media-list';
+import MediaUpload from '@/components/media/media-upload';
+import Nav from '@/components/nav';
+import Shop from '@/components/shop/shop';
+import { getUserFiles } from '@/data/files';
+import { getUserCoins } from '@/data/users';
+import { getSession } from '@/lib/auth';
+import { unstable_cache as nextCache } from 'next/cache';
+import { redirect } from 'next/navigation';
 
 export default async function Home() {
   const session = await getSession();
 
   if (!session) {
-    redirect("/sign-in");
+    redirect('/sign-in');
   }
+
+  // const data = await processData(
+  //   '75e66b06aff7538ed8a72dec04a793aff263559b191b716f518559dacff29121'
+  // );
+
+  // await langChainService.queryVectorStore('What is Salmon?');
 
   const getUserData = nextCache(
     async () => {

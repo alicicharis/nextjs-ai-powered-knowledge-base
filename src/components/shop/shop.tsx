@@ -2,7 +2,7 @@ import { db } from "@/db";
 import { coinPlans } from "@/db/schema";
 import { Coins } from "lucide-react";
 import EmbeddedCheckoutButton from "./embedded-checkout-button";
-import SectionCard from "./section-card";
+import SectionCard from "../section-card";
 
 export default async function Shop() {
   const coinPlansData = await db
