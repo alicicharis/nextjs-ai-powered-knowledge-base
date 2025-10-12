@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { loadStripe } from "@stripe/stripe-js";
+import { loadStripe } from '@stripe/stripe-js';
 import {
   EmbeddedCheckoutProvider,
   EmbeddedCheckout,
-} from "@stripe/react-stripe-js";
-import { useCallback, useRef, useState } from "react";
+} from '@stripe/react-stripe-js';
+import { useCallback, useRef, useState } from 'react';
 
 export default function EmbeddedCheckoutButton({
   price,
@@ -21,10 +21,10 @@ export default function EmbeddedCheckoutButton({
   const modalRef = useRef<HTMLDialogElement>(null);
 
   const fetchClientSecret = useCallback(() => {
-    return fetch("/api/embedded-checkout", {
-      method: "POST",
+    return fetch('/api/embedded-checkout', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({ priceId: priceId }),
     })
@@ -50,7 +50,7 @@ export default function EmbeddedCheckoutButton({
         className="btn btn-primary btn-block mt-6 text-lg"
         onClick={handleCheckoutClick}
       >
-        ${price} Buy
+        ${price}
       </button>
       <dialog ref={modalRef} className="modal">
         <div className="modal-box w-100 max-w-screen-2xl">

@@ -57,3 +57,7 @@ export const processData = async (
     };
   }
 };
+
+export const queryVectorStore = async (question: string) => {
+  return await langChainService.queryVectorStore(question);
+};

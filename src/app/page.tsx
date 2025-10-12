@@ -1,3 +1,4 @@
+import Chat from '@/components/chat/chat';
 import MediaList from '@/components/media/media-list';
 import MediaUpload from '@/components/media/media-upload';
 import Nav from '@/components/nav';
@@ -14,12 +15,6 @@ export default async function Home() {
   if (!session) {
     redirect('/sign-in');
   }
-
-  // const data = await processData(
-  //   '75e66b06aff7538ed8a72dec04a793aff263559b191b716f518559dacff29121'
-  // );
-
-  // await langChainService.queryVectorStore('What is Salmon?');
 
   const getUserData = nextCache(
     async () => {
@@ -48,11 +43,14 @@ export default async function Home() {
 
   return (
     <main>
-      <Nav coins={userData?.coins || 0} />
-      <div className="grid grid-cols-12 p-4 max-w-7xl mx-auto gap-4">
-        <Shop />
-        <MediaUpload />
-        <MediaList files={filesData || []} />
+      <div className="max-w-7xl mx-auto">
+        <Nav coins={userData?.coins || 0} />
+        <div className="grid grid-cols-12 p-4 gap-4">
+          <Shop />
+          <MediaUpload />
+          <MediaList files={filesData || []} />
+          <Chat />
+        </div>
       </div>
     </main>
   );
